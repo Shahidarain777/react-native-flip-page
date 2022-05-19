@@ -13,7 +13,9 @@ This package allows you to use the cool Flipboard page swipe effect in your Reac
 Installation is pretty straight-forward, as you just have to `npm install` this package:
 
 ```
-npm install --save react-native-flip-page
+yarn add git+https://github.com/Shahidarain777/react-native-flip-page.git
+
+npm install --save git+https://github.com/Shahidarain777/react-native-flip-page.git
 ```
 
 Then, use the module by importing in in your app code.
@@ -40,13 +42,13 @@ This package consists of two components. Simply throw a `FlipPage` component wit
 
 There are a few properties that define the behaviour of the component, here they are:
 
-| Prop | Type | Default | Role |
-|------|------|---------|------|
-| `loopForever` | `bool` | `false` | Indicates if the component should go back to the first page when reaching last page, and go back to last page after reaching first page. |
-| `orientation` | `string` | `vertical` | Orientation of swipes. `vertical` or `horizontal` for respectively up/down swipes and left/right swipes. |
-| `onFinish(orientation)` | `function` | `null` | Function called after the swipe is finished. Only usable if `loopForever` is `false`. |
-| `reverse` | `bool` | `false` | If true, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page.(Good for Rtl book like persian) |
-| `onPageChange(pageIndex,direction)` | `function` | `null` | Callback when the page has been changed. Parameters: pageIndex, direction |
+| Prop                                | Type       | Default    |  Role                                                                                                                                                               |
+| ----------------------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loopForever`                       | `bool`     | `false`    | Indicates if the component should go back to the first page when reaching last page, and go back to last page after reaching first page.                            |
+| `orientation`                       | `string`   | `vertical` |  Orientation of swipes. `vertical` or `horizontal` for respectively up/down swipes and left/right swipes.                                                           |
+| `onFinish(orientation)`             | `function` | `null`     |  Function called after the swipe is finished. Only usable if `loopForever` is `false`.                                                                              |
+| `reverse`                           | `bool`     | `false`    |  If true, the user must swip in reverse order: he must swipe down/right to see the next page, and up/left to see the previous page.(Good for Rtl book like persian) |
+| `onPageChange(pageIndex,direction)` | `function` | `null`     |  Callback when the page has been changed. Parameters: pageIndex, direction                                                                                          |
 
 ## Contribute
 
