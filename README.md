@@ -10,7 +10,7 @@ This package allows you to use the cool Flipboard page swipe effect in your Reac
 
 ## Install
 
-Installation is pretty straight-forward, as you just have to `npm install` this package:
+Installation is pretty straight-forward, as you just have to `npm install` or `npm add` this package:
 
 ```
 yarn add git+https://github.com/Shahidarain777/react-native-flip-page.git
