@@ -31,7 +31,7 @@ class FlipPage extends React.Component {
     this.renderPage = this.renderPage.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         const { dx, dy } = gestureState;
@@ -99,6 +99,7 @@ class FlipPage extends React.Component {
   }
 
   handlePanResponderMove(e, gestureState) {
+    // console.log(gestureState)
     const { dx, dy } = gestureState;
     const { direction } = this.state;
     const { orientation, loopForever, reverse } = this.props;
@@ -164,6 +165,37 @@ class FlipPage extends React.Component {
       }
     }
   }
+
+  next(){
+   
+    this.handlePanResponderMove(null, {
+      dx: -180.5,
+      dy: 16
+    });
+    setTimeout(() => {
+     
+      this.handlePanResponderStop(null, {
+        dx: -200.5,
+        dy: 16
+      });
+    }, 200);
+  }
+  prev(){
+    this.handlePanResponderMove(null, {
+      "dx": 180.5,
+      "dy": 0,
+    });
+    setTimeout(() => {
+     
+      this.handlePanResponderStop(null, {
+        "dx": 364.5,
+      "dy": 0,
+      });
+    }, 200);
+   
+    
+  }
+  
 
   resetHalves() {
     const { loopForever, children } = this.props;
@@ -265,6 +297,7 @@ class FlipPage extends React.Component {
 
   handlePanResponderStop(e, gestureState) {
     const { dx, dy } = gestureState;
+    console.log(gestureState)
     const { angle, page, direction } = this.state;
     const { orientation, reverse } = this.props;
     const dn = orientation === 'vertical' ? dy : dx;
@@ -413,6 +446,7 @@ FlipPage.propTypes = {
   loopForever: PropTypes.bool,
   onFinish: PropTypes.func,
   onPageChange: PropTypes.func,
+  flip:PropTypes.func,
   reverse: PropTypes.bool,
 };
 
@@ -420,6 +454,7 @@ FlipPage.defaultProps = {
   orientation: 'vertical',
   loopForever: false,
   onFinish: null,
+  flip:null,
   onPageChange: () => {},
   reverse: false,
 };
@@ -444,5 +479,7 @@ class FlipPagePage extends React.PureComponent {
 
 export {
   FlipPage as default,
-  FlipPagePage
+  FlipPagePage,
+   
 };
+
