@@ -26,7 +26,7 @@ export default StyleSheet.create({
     width: '50%',
   },
   under: {
-    backgroundColor: '#000',
+    backgroundColor: '#7272e3',
   },
   verticalFirstHalf: {
     top: 0,
