@@ -99,7 +99,6 @@ class FlipPage extends React.Component {
   }
 
   handlePanResponderMove(e, gestureState) {
-    // console.log(gestureState)
     const { dx, dy } = gestureState;
     const { direction } = this.state;
     const { orientation, loopForever, reverse } = this.props;
@@ -297,7 +296,6 @@ class FlipPage extends React.Component {
 
   handlePanResponderStop(e, gestureState) {
     const { dx, dy } = gestureState;
-    console.log(gestureState)
     const { angle, page, direction } = this.state;
     const { orientation, reverse } = this.props;
     const dn = orientation === 'vertical' ? dy : dx;
