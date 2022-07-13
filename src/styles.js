@@ -41,7 +41,7 @@ export default StyleSheet.create({
     left: '50%',
   },
   shadow: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'Transparent',
     height: '100%',
     left: 0,
     position: 'absolute',
