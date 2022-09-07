@@ -68,12 +68,18 @@ class FlipPage extends React.Component {
       { x: 0, y: halfHeight / 2, z: 0 } :
       { x: halfWidth / 2, y: 0, z: 0 };
     transformOrigin(matrix, origin);
-    firstHalf.setNativeProps({
-      transform: [
-        { matrix },
-        { perspective: 100000 },
-      ],
-    });
+    try {
+      firstHalf.setNativeProps({
+        transform: [
+          { matrix },
+          { perspective: 100000 },
+        ],
+      });
+      
+    } catch (error) {
+      
+    }
+   
   }
 
   rotateSecondHalf(angle) {
@@ -90,12 +96,17 @@ class FlipPage extends React.Component {
       { x: 0, y: -halfHeight / 2, z: 0 } :
       { x: -halfWidth / 2, y: 0, z: 0 };
     transformOrigin(matrix, origin);
-    secondHalf.setNativeProps({
-      transform: [
-        { matrix },
-        { perspective: 100000 },
-      ],
-    });
+    try {
+      secondHalf.setNativeProps({
+        transform: [
+          { matrix },
+          { perspective: 100000 },
+        ],
+      });
+    } catch (error) {
+      
+    }
+    
   }
 
   handlePanResponderMove(e, gestureState) {
@@ -229,9 +240,14 @@ class FlipPage extends React.Component {
           angle: 0,
           page: loopForever && this.isOnFirstPage() ? pages - 1 : page - 1,
         }, () => {
-          this.props.onPageChange(this.state.page, 'prev');
+          try {
+            this.props.onPageChange(this.state.page, 'prev');
           firstHalf.setNativeProps({ transform: [] });
           secondHalf.setNativeProps({ transform: [] });
+          } catch (error) {
+            
+          }
+          
         });
       } else {
         if (typeof onFinish === 'function') {
