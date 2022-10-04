@@ -68,7 +68,7 @@ class FlipPage extends React.Component {
       { x: 0, y: halfHeight / 2, z: 0 } :
       { x: halfWidth / 2, y: 0, z: 0 };
     try {
-      if (firstHalf==null)return;
+      if (firstHalf==null || firstHalf==undefined)return;
       transformOrigin(matrix, origin);
       firstHalf.setNativeProps({
         transform: [
@@ -98,7 +98,7 @@ class FlipPage extends React.Component {
       { x: -halfWidth / 2, y: 0, z: 0 };
     
     try {
-      if (secondHalf==null)return;
+      if (secondHalf==null || secondHalf==undefined)return;
       transformOrigin(matrix, origin);
       secondHalf.setNativeProps({
         transform: [
