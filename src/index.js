@@ -67,8 +67,9 @@ class FlipPage extends React.Component {
     const origin = orientation === 'vertical' ?
       { x: 0, y: halfHeight / 2, z: 0 } :
       { x: halfWidth / 2, y: 0, z: 0 };
-    transformOrigin(matrix, origin);
     try {
+      if (firstHalf==null)return;
+      transformOrigin(matrix, origin);
       firstHalf.setNativeProps({
         transform: [
           { matrix },
@@ -95,8 +96,10 @@ class FlipPage extends React.Component {
     const origin = orientation === 'vertical' ?
       { x: 0, y: -halfHeight / 2, z: 0 } :
       { x: -halfWidth / 2, y: 0, z: 0 };
-    transformOrigin(matrix, origin);
+    
     try {
+      if (secondHalf==null)return;
+      transformOrigin(matrix, origin);
       secondHalf.setNativeProps({
         transform: [
           { matrix },
