@@ -20,6 +20,8 @@ class FlipPage extends React.Component {
       halfHeight: 0,
       halfWidth: 0,
       shouldGoNext: false,
+      canNextF:true,
+      canNextS:true,
       shouldGoPrevious: false,
       direction: '',
     };
@@ -55,156 +57,190 @@ class FlipPage extends React.Component {
   }
 
   rotateFirstHalf(angle) {
-    const {
-      halfHeight,
-      halfWidth,
-      page,
-    } = this.state;
-    const { orientation } = this.props;
-    const firstHalf = this.firstHalves[page];
-
-    let matrix = orientation === 'vertical' ? rotateX(angle) : rotateY(angle);
-    const origin = orientation === 'vertical' ?
-      { x: 0, y: halfHeight / 2, z: 0 } :
-      { x: halfWidth / 2, y: 0, z: 0 };
-    try {
-      if (firstHalf==null || firstHalf==undefined)return;
-      transformOrigin(matrix, origin);
-      firstHalf.setNativeProps({
-        transform: [
-          { matrix },
-          { perspective: 100000 },
-        ],
-      });
-      
-    } catch (error) {
-      
-    }
+  
+      const {
+        halfHeight,
+        halfWidth,
+        page,
+      } = this.state;
+      const { orientation } = this.props;
+      const firstHalf = this.firstHalves[page];
+  
+      let matrix = orientation === 'vertical' ? rotateX(angle) : rotateY(angle);
+      const origin = orientation === 'vertical' ?
+        { x: 0, y: halfHeight / 2, z: 0 } :
+        { x: halfWidth / 2, y: 0, z: 0 };
+      try {
+        if (firstHalf==null || firstHalf==undefined)return;
+        transformOrigin(matrix, origin);
+        firstHalf.setNativeProps({
+          transform: [
+            { matrix },
+            { perspective: 100000 },
+          ],
+        });
+        
+      } catch (error) {
+        
+      }
+ 
+   
+   
    
   }
 
   rotateSecondHalf(angle) {
-    const {
-      halfHeight,
-      halfWidth,
-      page,
-    } = this.state;
-    const { orientation } = this.props;
-    const secondHalf = this.secondHalves[page];
-
-    let matrix = orientation === 'vertical' ? rotateX(angle) : rotateY(angle);
-    const origin = orientation === 'vertical' ?
-      { x: 0, y: -halfHeight / 2, z: 0 } :
-      { x: -halfWidth / 2, y: 0, z: 0 };
     
-    try {
-      if (secondHalf==null || secondHalf==undefined)return;
-      transformOrigin(matrix, origin);
-      secondHalf.setNativeProps({
-        transform: [
-          { matrix },
-          { perspective: 100000 },
-        ],
-      });
-    } catch (error) {
+   
+      const {
+        halfHeight,
+        halfWidth,
+        page,
+      } = this.state;
+      const { orientation } = this.props;
+      const secondHalf = this.secondHalves[page];
+  
+      let matrix = orientation === 'vertical' ? rotateX(angle) : rotateY(angle);
+      const origin = orientation === 'vertical' ?
+        { x: 0, y: -halfHeight / 2, z: 0 } :
+        { x: -halfWidth / 2, y: 0, z: 0 };
       
-    }
+      try {
+        if (secondHalf==null || secondHalf==undefined)return;
+        transformOrigin(matrix, origin);
+        secondHalf.setNativeProps({
+          transform: [
+            { matrix },
+            { perspective: 100000 },
+          ],
+        });
+      } catch (error) {
+        
+      }
+   
+   
     
   }
 
   handlePanResponderMove(e, gestureState) {
-    const { dx, dy } = gestureState;
-    const { direction } = this.state;
-    const { orientation, loopForever, reverse } = this.props;
-    const dn = orientation === 'vertical' ? dy : dx;
-
-    let angle = (dn / 250) * 180;
-
-    if (angle < 0) {
-      angle = Math.max(-180, angle);
-    } else {
-      angle = Math.min(180, angle);
-    }
-
-    let nextDirection = direction;
-    if (reverse) {
-      if (dn < 0 && direction === '') {
-        nextDirection = orientation === 'vertical' ? 'top' : 'left';
-      } else if (dn > 0 && direction === '') {
-        nextDirection = orientation === 'vertical' ? 'bottom' : 'right';
+ 
+    
+      const { dx, dy } = gestureState;
+      const { direction } = this.state;
+      const { orientation, loopForever, reverse } = this.props;
+      const dn = orientation === 'vertical' ? dy : dx;
+  
+      let angle = (dn / 250) * 180;
+  
+      if (angle < 0) {
+        angle = Math.max(-180, angle);
+      } else {
+        angle = Math.min(180, angle);
       }
-      this.setState({ direction: nextDirection });
-      if (dn < 0 && (nextDirection === 'top' || nextDirection === 'left')) {
-        if (this.isOnFirstPage() && !loopForever) {
-          angle = Math.max(angle, -30);
+  
+      let nextDirection = direction;
+      if (reverse) {
+        if (dn < 0 && direction === '') {
+          nextDirection = orientation === 'vertical' ? 'top' : 'left';
+        } else if (dn > 0 && direction === '') {
+          nextDirection = orientation === 'vertical' ? 'bottom' : 'right';
         }
-        this.rotateSecondHalf(angle);
-        this.setState({
-          angle,
-        });
-      } else if (dn > 0 && (nextDirection === 'bottom' || nextDirection === 'right')) {
-        if (this.isOnLastPage() && !loopForever) {
-          angle = Math.min(angle, 30);
+        this.setState({ direction: nextDirection });
+        if (dn < 0 && (nextDirection === 'top' || nextDirection === 'left')) {
+          if (this.isOnFirstPage() && !loopForever) {
+            angle = Math.max(angle, -30);
+          }
+          this.rotateSecondHalf(angle);
+          this.setState({
+            angle,
+          });
+        } else if (dn > 0 && (nextDirection === 'bottom' || nextDirection === 'right')) {
+          if (this.isOnLastPage() && !loopForever) {
+            angle = Math.min(angle, 30);
+          }
+          this.rotateFirstHalf(angle);
+          this.setState({
+            angle,
+          });
         }
-        this.rotateFirstHalf(angle);
-        this.setState({
-          angle,
-        });
       }
-    }
-    else {
-      if (dn < 0 && direction === '') {
-        nextDirection = orientation === 'vertical' ? 'top' : 'left';
-      } else if (dn > 0 && direction === '') {
-        nextDirection = orientation === 'vertical' ? 'bottom' : 'right';
-      }
-      this.setState({ direction: nextDirection });
-      if (dn < 0 && (nextDirection === 'top' || nextDirection === 'left')) {
-        if (this.isOnLastPage() && !loopForever) {
-          angle = Math.max(angle, -30);
+      else {
+        if (dn < 0 && direction === '') {
+          nextDirection = orientation === 'vertical' ? 'top' : 'left';
+        } else if (dn > 0 && direction === '') {
+          nextDirection = orientation === 'vertical' ? 'bottom' : 'right';
         }
-        this.rotateSecondHalf(angle);
-        this.setState({
-          angle,
-        });
-      } else if (dn > 0 && (nextDirection === 'bottom' || nextDirection === 'right')) {
-        if (this.isOnFirstPage() && !loopForever) {
-          angle = Math.min(angle, 30);
+        this.setState({ direction: nextDirection });
+        if (dn < 0 && (nextDirection === 'top' || nextDirection === 'left')) {
+          if (this.isOnLastPage() && !loopForever) {
+            angle = Math.max(angle, -30);
+          }
+          this.rotateSecondHalf(angle);
+          this.setState({
+            angle,
+          });
+        } else if (dn > 0 && (nextDirection === 'bottom' || nextDirection === 'right')) {
+          if (this.isOnFirstPage() && !loopForever) {
+            angle = Math.min(angle, 30);
+          }
+          this.rotateFirstHalf(angle);
+          this.setState({
+            angle,
+          });
         }
-        this.rotateFirstHalf(angle);
-        this.setState({
-          angle,
-        });
       }
-    }
+ 
   }
 
   next(){
-   
-    this.handlePanResponderMove(null, {
-      dx: -180.5,
-      dy: 16
-    });
-    setTimeout(() => {
-     
-      this.handlePanResponderStop(null, {
-        dx: -200.5,
+   if(this.state.canNextF){
+     this.setState({canNextF:false},()=>{
+      this.handlePanResponderMove(null, {
+        dx: -180.5,
         dy: 16
       });
+     
+     })
+
+     setTimeout(() => {
+      this.setState({canNextF:true},()=>{
+        this.handlePanResponderStop(null, {
+          dx: -200.5,
+          dy: 16
+        });
+      });
+      
+     
     }, 200);
+    
+   }
+  
   }
   prev(){
-    this.handlePanResponderMove(null, {
-      "dx": 180.5,
-      "dy": 0,
-    });
-    setTimeout(() => {
+
+    if(this.state.canNextS){
+      this.setState({canNextS:false},()=>{
+        this.handlePanResponderMove(null, {
+          dx: 180.5,
+          dy: 0,
+        });
+      
+      })
+ 
+      setTimeout(() => {
+       this.setState({canNextS:true},()=>{
+        this.handlePanResponderStop(null, {
+          dx: 364.5,
+          dy: 0,
+        });
+       });
+       
+      
+     }, 200);
      
-      this.handlePanResponderStop(null, {
-        "dx": 364.5,
-      "dy": 0,
-      });
-    }, 200);
+    }
+
+   
    
     
   }
@@ -231,6 +267,7 @@ class FlipPage extends React.Component {
 
       if (shouldGoNext) {
         this.setState({
+         
           angle: 0,
           page: loopForever && this.isOnLastPage() ? 0 : page + 1,
         }, () => {
